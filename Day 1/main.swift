@@ -5,15 +5,6 @@
 
 import Foundation
 
-func freqChangeToInt(line: String) -> Int {
-    if line[0] == "+" {
-        return Int(line[1...])!
-    } else if line[0] == "-" {
-        return -Int(line[1...])!
-    }
-    return 0
-}
-
 func main() {
     let lineReader = LineReader(path: "input.txt")
     
@@ -33,7 +24,7 @@ func main() {
     for line in reader {
         autoreleasepool {
             let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            let change = freqChangeToInt(line: trimmed)
+            let change = Int(trimmed)!
             
             frequency += change
             freqChange.append(change)
@@ -56,10 +47,6 @@ func main() {
     
     while true {
         // Loop back to beginning of frequency change list
-        if index == freqChange.count {
-            index = 0
-        }
-        
         frequency += freqChange[index]
         
         if set.contains(frequency) {
@@ -70,6 +57,7 @@ func main() {
         // Store encountered frequencies in set
         set.insert(frequency)
         index += 1
+        index %= freqChange.count
     }
 }
 
