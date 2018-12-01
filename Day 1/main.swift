@@ -22,7 +22,7 @@ func main() {
         return
     }
     
-    // freqChangeay storing frequency changes
+    // Array storing frequency changes
     var freqChange = [Int]()
     // Set storing encountered frequencies
     var set = Set<Int>()
