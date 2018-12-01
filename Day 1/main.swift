@@ -5,15 +5,33 @@
 
 import Foundation
 
-let x = LineReader(path: "input.txt")
-
-guard let reader = x else {
-    throw NSError(domain: "FileNotFound", code: 404, userInfo: nil)
-}
-
-
-for line in reader {
-    autoreleasepool {
-        print(line.trimmingCharacters(in: .whitespacesAndNewlines))
+func freqChangeToInt(line: String) -> Int {
+    if line[0] == "+" {
+        return Int(line[1...])!
+    } else if line[0] == "-" {
+        return -Int(line[1...])!
     }
+    return 0
 }
+
+func main() {
+    let lineReader = LineReader(path: "input.txt")
+    
+    guard let reader = lineReader else {
+        print("File not found")
+        return
+    }
+    
+    var frequency = 0
+    
+    for line in reader {
+        autoreleasepool {
+            let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            frequency += freqChangeToInt(line: line)
+        }
+    }
+    
+    print(frequency)
+}
+
+main()
