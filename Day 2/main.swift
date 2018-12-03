@@ -74,9 +74,9 @@ func main() {
         }
     }
     
-    print("Two count: " + String(twoCount))
-    print("Three count: " + String(threeCount))
-    print("Checksum: " + String(twoCount * threeCount))
+    print("Two count: \(twoCount)")
+    print("Three count: \(threeCount)")
+    print("Checksum: \(twoCount * threeCount)")
     
     outerLoop: for word in words {
         for word2 in words {
@@ -85,7 +85,7 @@ func main() {
                 
                 if result.0 {
                     let commonLetters = word[0...(result.1 - 1)] + word[(result.1 + 1)...]
-                    print("Common letters: " + commonLetters)
+                    print("Common letters: \(commonLetters)")
                     break outerLoop
                 }
             }

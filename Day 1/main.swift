@@ -21,13 +21,13 @@ func main() {
         freqChange.append(change)
         
         if set.contains(frequency) {
-            print("Duplicate frequency: " + String(frequency))
+            print("Duplicate frequency: \(frequency)")
             foundDupe = true
         }
         set.insert(frequency)
     }
     
-    print("Final frequency: " + String(frequency))
+    print("Final frequency: \(frequency)")
     
     if foundDupe {
         return
@@ -40,7 +40,7 @@ func main() {
         frequency += freqChange[index]
         
         if set.contains(frequency) {
-            print("Duplicate frequency: " + String(frequency))
+            print("Duplicate frequency: \(frequency)")
             break
         }
         
