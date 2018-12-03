@@ -46,14 +46,3 @@ public extension Collection where Self: BidirectionalCollection  {
         return  self[index]
     }
 }
-
-extension CGPoint: Hashable {
-    public var hashValue: Int {
-        return x.hashValue ^ y.hashValue
-    }
-}
-
-// Hashable requires Equatable, so define the equality function for CGPoints.
-public func ==(lhs: CGPoint, rhs: CGPoint) -> Bool {
-    return lhs.equalTo(rhs)
-}
