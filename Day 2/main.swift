@@ -47,55 +47,49 @@ func calcFreqMap(_ word: String) -> [Character: Int] {
 }
 
 func main() {
-    do {
-        let contents = try String(contentsOfFile: "input.txt", encoding: String.Encoding.utf8)
-        let words: [String] = contents.components(separatedBy: "\n").filter{$0 != ""}
+    let words = readInput()
+    var twoCount = 0
+    var threeCount = 0
+    
+    for word in words {
+        var foundTwo = false
+        var foundThree = false
         
-        var twoCount = 0
-        var threeCount = 0
+        let freqMap = calcFreqMap(word)
         
-        for word in words {
-            var foundTwo = false
-            var foundThree = false
-            
-            let freqMap = calcFreqMap(word)
-            
-            for count in freqMap.values {
-                if (count == 2) {
-                    foundTwo = true
-                }
-                if (count == 3) {
-                    foundThree = true
-                }
+        for count in freqMap.values {
+            if (count == 2) {
+                foundTwo = true
             }
-            
-            if (foundTwo) {
-                twoCount += 1
-            }
-            if (foundThree) {
-                threeCount += 1
+            if (count == 3) {
+                foundThree = true
             }
         }
         
-        print("Two count: " + String(twoCount))
-        print("Three count: " + String(threeCount))
-        print("Checksum: " + String(twoCount * threeCount))
-        
-        outerLoop: for word in words {
-            for word2 in words {
-                if word != word2 {
-                    let result = differsByOne(word, word2)
-                    
-                    if result.0 {
-                        let commonLetters = word[0...(result.1 - 1)] + word[(result.1 + 1)...]
-                        print("Common letters: " + commonLetters)
-                        break outerLoop
-                    }
+        if (foundTwo) {
+            twoCount += 1
+        }
+        if (foundThree) {
+            threeCount += 1
+        }
+    }
+    
+    print("Two count: " + String(twoCount))
+    print("Three count: " + String(threeCount))
+    print("Checksum: " + String(twoCount * threeCount))
+    
+    outerLoop: for word in words {
+        for word2 in words {
+            if word != word2 {
+                let result = differsByOne(word, word2)
+                
+                if result.0 {
+                    let commonLetters = word[0...(result.1 - 1)] + word[(result.1 + 1)...]
+                    print("Common letters: " + commonLetters)
+                    break outerLoop
                 }
             }
         }
-    } catch let error as NSError {
-        print(error.localizedDescription)
     }
 }
 
