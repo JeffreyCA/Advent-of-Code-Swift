@@ -35,8 +35,6 @@ func main() {
     let rects = parseRects(lines)
 
     var areaGrid = [[Int]](repeatElement([Int](repeatElement(0, count: 1000)), count: 1000))
-    var overlapGrid = [[Int]](repeatElement([Int](repeatElement(0, count: 1000)), count: 1000))
-    var overlapClaims = [Int](repeatElement(0, count: rects.count + 1))
     var claim = 1
     
     for rect in rects {
@@ -47,12 +45,6 @@ func main() {
         
         for i in minX ... maxX {
             for j in minY ... maxY {
-                if overlapGrid[i][j] > 0 {
-                    overlapClaims[overlapGrid[i][j]] += 1
-                    overlapClaims[claim] += 1
-                }
-                
-                overlapGrid[i][j] = claim
                 areaGrid[i][j] += 1
             }
         }
@@ -65,7 +57,29 @@ func main() {
         sum += overlappingPoints
     }
     
-    let nonOverlapClaim = overlapClaims.indices.filter({ $0 > 0 && overlapClaims[$0] == 0 })[0]
+    var nonOverlapClaim: Int = 0
+    claim = 1
+    
+    for rect in rects {
+        let minX = Int(rect.minX)
+        let maxX = Int(rect.minX + rect.width) - 1
+        let minY = Int(rect.minY)
+        let maxY = Int(rect.minY + rect.height) - 1
+        var overlapped = false
+        
+        for i in minX ... maxX {
+            for j in minY ... maxY {
+                if (areaGrid[i][j] > 1) {
+                    overlapped = true
+                }
+            }
+        }
+        if !overlapped {
+            nonOverlapClaim = claim
+            break
+        }
+        claim += 1
+    }
     
     print("Overlapping area: \(sum)")
     print("Non-overlapping claim: \(nonOverlapClaim)")
