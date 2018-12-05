@@ -5,6 +5,8 @@
 
 import Foundation
 
+let ALPHABET_LOWER = "abcdefghijklmnopqrstuvwxyz"
+
 func readInput() -> [String] {
     do {
         let contents = try String(contentsOfFile: "input.txt", encoding: String.Encoding.utf8)
