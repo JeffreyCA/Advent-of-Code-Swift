@@ -5,44 +5,38 @@
 
 import Foundation
 
-func oppositeCase(_ char: Character) -> Character {
-    let LOWER_A = 97, UPPER_LOWER_OFFSET = 32
-    let val = Int(char.unicodeScalars.first!.value)
-    return Character(Unicode.Scalar(val >= LOWER_A ? val - UPPER_LOWER_OFFSET: val + UPPER_LOWER_OFFSET)!)
-}
-
-func reactPolymerLength(_ str: String) -> Int {
+// Determine length of polymer after reduction
+func reactPolymerLength(_ polymer: String) -> Int {
     var stack = [Character]()
-    for c in str {
-        if !stack.isEmpty && stack.last == oppositeCase(c) {
+    for unit in polymer {
+        if !stack.isEmpty && stack.last == oppositeCase(unit) {
             _ = stack.popLast()
         } else {
-            stack.append(c)
+            stack.append(unit)
         }
     }
     return stack.count
 }
 
 func main() {
-    let line = readInput()[0]
-    var minLength = reactPolymerLength(line)
-    var minLengthRemovedChar: Character = " "
+    let polymer = readInput().first!
+    var minReactLength = reactPolymerLength(polymer)
+    var minRemovedType: Character = " "
+    print("Length after reaction: \(minReactLength)")
     
-    print("Shortest polymer length: \(minLength)")
-    
+    // Part 2: Try removing every character from A-Z/a-z to get minimum reaction length
     for char in ALPHABET_LOWER {
-        let upper = oppositeCase(char)
-        let regexp: String = "\(char)|\(upper)"
-        let result = line.replacingOccurrences(of: regexp, with: "",
-                                               options: [.regularExpression, .caseInsensitive])
+        let result = polymer.replacingOccurrences(of: String(char), with: "", options: .caseInsensitive)
         let reactLength = reactPolymerLength(result)
-        if reactLength < minLength {
-            minLength = reactLength
-            minLengthRemovedChar = char
+        
+        if reactLength < minReactLength {
+            minReactLength = reactLength
+            minRemovedType = char
         }
     }
     
-    print("Min Length: \(minLength), char: \(minLengthRemovedChar)")
+    print("Shortest length after reaction: \(minReactLength), " +
+        "removed type: \(oppositeCase(minRemovedType))/\(minRemovedType)")
 }
 
 main()
