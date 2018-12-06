@@ -7,6 +7,11 @@ import Foundation
 
 let ALPHABET_LOWER = "abcdefghijklmnopqrstuvwxyz"
 
+struct Point : Hashable {
+    let x: Int
+    let y: Int
+}
+
 // Return character of opposite case, assuming given character is in A-Z/a-z
 func oppositeCase(_ char: Character) -> Character {
     let LOWER_A = 97, OFFSET = 32
@@ -39,9 +44,4 @@ func matches(for regex: String, in text: String) -> [String] {
         print("Invalid regex: \(error.localizedDescription)")
         return []
     }
-}
-
-struct Point : Hashable {
-    let x: Int
-    let y: Int
 }
