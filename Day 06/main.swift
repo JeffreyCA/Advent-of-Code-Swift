@@ -73,9 +73,7 @@ func main() {
         for y in minY ... maxY {
             // Keep track of coordinate with minimum distance to (x, y)
             var minDist = Int.max
-            var minPoint = Point(x: 0, y: 0)
-            // Ties may exist, which we must ignore
-            var tie = false
+            var minPoint: Point? = nil
             // Sum of total distance from (x, y) to all coordinates (Part 2)
             var totalDist = 0
             
@@ -85,22 +83,23 @@ func main() {
                 if manhattanDist < minDist {
                     minDist = manhattanDist
                     minPoint = point
-                    // Must reset tie as we have encountered a shorter distance
-                    tie = false
                 } else if manhattanDist == minDist {
-                    tie = true
+                    // Tie occured, so no minimum point
+                    minPoint = nil
                 }
                 
                 totalDist += manhattanDist
             }
             
-            if !tie && isOnBoundary(x, y, minX, maxX, minY, maxY) {
-                // Since (x, y) is a boundary point which is closest to minPoint (no tie), this would
-                // result an infinite area, so we do not consider this point for the Part 1 answer
-                dict[minPoint]?.0 = true
-            } else if !tie {
-                // (x, y) is not a boundary point, so increase the area of influence for minPoint
-                dict[minPoint]?.1 += 1
+            if let minPoint = minPoint {
+                if isOnBoundary(x, y, minX, maxX, minY, maxY) {
+                    // Since (x, y) is a boundary point which is closest to minPoint (no tie), this would
+                    // result an infinite area, so we do not consider this point for the Part 1 answer
+                    dict[minPoint]!.0 = true
+                } else {
+                    // (x, y) is not a boundary point, so increase the area of influence for minPoint
+                    dict[minPoint]!.1 += 1
+                }
             }
             
             if totalDist <= MAX_TOTAL_DIST {
