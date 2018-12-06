@@ -40,3 +40,8 @@ func matches(for regex: String, in text: String) -> [String] {
         return []
     }
 }
+
+struct Point : Hashable {
+    let x: Int
+    let y: Int
+}
