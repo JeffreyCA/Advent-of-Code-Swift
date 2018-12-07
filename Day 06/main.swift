@@ -43,8 +43,8 @@ func isOnBoundary(_ x: Int, _ y: Int, _ minX: Int, _ maxX: Int, _ minY: Int, _ m
 }
 
 func main() {
-    let line = readInput()
-    let coordinates : [Point] = line.map { (str) -> Point in
+    let lines = readInput()
+    let coordinates : [Point] = lines.map { (str) -> Point in
         let split = str.components(separatedBy: ", ")
         return Point(x: Int(split[0])!, y: Int(split[1])!)
     }
