@@ -8,17 +8,28 @@ import Foundation
 // Graph struct using adjacency list representation
 struct Graph {
     var adjacency = [String: [String]]()
+    var incoming = [String: [String]]()
+    var vertexCount = 0
     
     mutating func addEdge(origin: String, dest: String) {
         if adjacency[origin] == nil {
             adjacency[origin] = [String]()
+            incoming[origin] = [String]()
+            vertexCount += 1
         }
         
         if adjacency[dest] == nil {
             adjacency[dest] = [String]()
+            incoming[dest] = [String]()
+            vertexCount += 1
         }
 
         adjacency[origin]?.append(dest)
+        incoming[dest]?.append(origin)
+    }
+    
+    func isEdge(origin: String, dest: String) -> Bool {
+        return adjacency[origin]!.contains(dest)
     }
     
     // Kahn’s algorithm
@@ -87,10 +98,83 @@ func parseGraph(input: [String]) -> Graph {
     return graph
 }
 
+// Represents a worker
+struct Worker {
+    var task: String = ""
+    var timeLeft: Int = 0
+}
+
+// Determine length of task
+func taskLength(letter: String) -> Int {
+    return 60 + Int(letter.unicodeScalars.first!.value - "A".unicodeScalars.first!.value) + 1
+}
+
+// Produce list of tasks that can be started given list of completed tasks and worker log
+func compatibleTasks(_ completed: [String], _ graph: Graph, _ workers: [Worker]) -> [String] {
+    let currentTasks = workers.map { (worker) -> String in worker.task }.filter({ !$0.isEmpty })
+    let availableTasks = graph.adjacency.keys.filter{!currentTasks.contains($0) && !completed.contains($0)}
+    var compatibleTasks = [String]()
+    
+    for key in availableTasks {
+        var foundCompatibleTask = true
+        
+        // Make sure all prerequisites are completed
+        for incoming in graph.incoming[key]! {
+            if !completed.contains(incoming) {
+                foundCompatibleTask = false
+                break
+            }
+        }
+        
+        if foundCompatibleTask {
+            compatibleTasks.append(key)
+        }
+    }
+    
+    return compatibleTasks
+}
+
 func main() {
     let lines = readInput()
     var graph = parseGraph(input: lines)
     print("Order of steps: \(graph.topologicalSort().joined())")
+    
+    let WORKER_COUNT = 5
+    var workers = [Worker].init(repeating: Worker(), count: WORKER_COUNT)
+    var completedTasks = [String]()
+    var time = 0
+    
+    // Simulate work
+    while completedTasks.count < graph.vertexCount {
+        for (index, _) in workers.enumerated() {
+            if !workers[index].task.isEmpty {
+                workers[index].timeLeft -= 1
+                
+                // Task completed, free up worker
+                if workers[index].timeLeft == 0 {
+                    completedTasks.append(workers[index].task)
+                    workers[index].task = ""
+                }
+            }
+        }
+        
+        let availableTasks = compatibleTasks(completedTasks, graph, workers)
+        
+        for task in availableTasks {
+            for (index, _) in workers.enumerated() {
+                // Set worker to work on task
+                if workers[index].task.isEmpty {
+                    workers[index].task = task
+                    workers[index].timeLeft = taskLength(letter: task)
+                    break
+                }
+            }
+        }
+        
+        time += 1
+    }
+    
+    print("Time to complete all steps: \(time - 1)")
 }
 
 main()
