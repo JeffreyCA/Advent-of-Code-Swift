@@ -131,7 +131,8 @@ func compatibleTasks(_ completed: [String], _ graph: Graph, _ workers: [Worker])
         }
     }
     
-    return compatibleTasks
+    // Order in which tasks are added not necessarily in order (depends on hashing?)
+    return compatibleTasks.sorted()
 }
 
 func main() {
@@ -143,7 +144,7 @@ func main() {
     var workers = [Worker].init(repeating: Worker(), count: WORKER_COUNT)
     var completedTasks = [String]()
     var time = 0
-    
+
     // Simulate work
     while completedTasks.count < graph.vertexCount {
         for (index, _) in workers.enumerated() {
