@@ -3,6 +3,34 @@
 //  Author: raywenderlich
 //
 
+extension Deque {
+    // Aliases for enqueue and dequeue
+    public mutating func enqueueBack(_ element: T) {
+        self.enqueue(element)
+    }
+    
+    public mutating func dequeueFront() -> T? {
+        return self.dequeue()
+    }
+    
+    // Rotate queue based on offset
+    public mutating func rotate(_ offset: Int) {
+        if self.count <= 1 || offset == 0 {
+            return
+        }
+        
+        if offset > 0 {
+            for _ in 1 ... offset {
+                self.enqueueFront(self.dequeueBack()!)
+            }
+        } else {
+            for _ in offset ... -1 {
+                self.enqueueBack(self.dequeueFront()!)
+            }
+        }
+    }
+}
+
 public struct Deque<T> {
     private var array: [T?]
     private var head: Int
