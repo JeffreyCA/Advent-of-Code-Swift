@@ -5,19 +5,15 @@
 
 import Foundation
 
-func main() {
-    let input = readInput().first!.components(separatedBy: " ")
-    let playerCount = Int(input[0])!
-    let lastMarble = Int(input[6])!
-    
+func maxScore(_ playerCount: Int, _ marbleCount: Int) -> Int {
     // Double-ended queue representing the game
     var deque = Deque<Int>()
     deque.enqueueBack(0)
     
     // Player score counts
     var scores = [Int].init(repeating: 0, count: playerCount)
-
-    for marble in 1 ... lastMarble - 1 {
+    
+    for marble in 1 ... marbleCount {
         let currentPlayer = marble % playerCount
         
         if marble % 23 == 0 {
@@ -37,7 +33,16 @@ func main() {
         }
     }
     
-    print(scores.max()!)
+    return scores.max() ?? 0
+}
+
+func main() {
+    let input = readInput().first!.components(separatedBy: " ")
+    let playerCount = Int(input[0])!
+    let marbleCount = Int(input[6])!
+    
+    print("High score with \(marbleCount) marbles: \(maxScore(playerCount, marbleCount))")
+    print("High score with \(marbleCount * 100) marbles: \(maxScore(playerCount, marbleCount * 100))")
 }
 
 main()

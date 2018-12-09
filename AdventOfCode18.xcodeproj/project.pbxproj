@@ -348,9 +348,9 @@
 		00EBFE4521B2CE950000A236 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				003D85F721BD5A3D00322EB2 /* Deque.swift */,
 				00EBFE4621B2D3A70000A236 /* Extension.swift */,
 				006728B721B5A10E00A1BC1E /* Utils.swift */,
-				003D85F721BD5A3D00322EB2 /* Deque.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
