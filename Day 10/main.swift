@@ -7,18 +7,48 @@ import Foundation
 
 func main() {
     let input = readInput()
-    let expressions = input.map { (line) -> String in
+    
+    // Parse input into array of Points
+    var points = input.map { (line) -> Point in
         let values = matches(for: "-?\\d+", in: line)
-        let x = values[0]
-        let y = values[1]
-        // Prepend '+' if positive value
-        let t_x = values[2][0] == "-" ? values[2] : "+\(values[2])"
-        let t_y = values[3][0] == "-" ? values[3] : "+\(values[3])"
-        return "(\(x) \(t_x)t, \(y) \(t_y)t)"
+        let x = Int(values[0])!
+        let y = Int(values[1])!
+        let xVel = Int(values[2])!
+        let yVel = Int(values[3])!
+        return Point(x: x, y: y, xVelocity: xVel, yVelocity: yVel)
     }
     
-    // Output list of expressions that can be passed into Desmos graphing calculator
-    expressions.forEach({ print($0) })
+    // Keep track of boundary formed by points at any moment
+    var xLeft: Int = 0, xRight: Int = 0
+    var yBottom: Int = 0, yTop: Int = 0
+    // The height of the boundary when word is readable is 10
+    var height = Int.max
+    var time = 0
+    
+    while height > 10 {
+        for index in points.enumerated() {
+            points[index.offset].advance()
+        }
+        
+        // Recalculate boundary
+        xLeft = points.min { $0.x < $1.x }!.x
+        xRight = points.max { $0.x < $1.x }!.x
+        yTop = points.min { $0.y < $1.y }!.y
+        yBottom = points.max { $0.y < $1.y }!.y
+        
+        height = yBottom - yTop
+        time += 1
+    }
+    
+    // Output plot within boundary
+    for y in yTop ... yBottom {
+        for x in xLeft ... xRight {
+            print(points.contains { $0.x == x && $0.y == y } ? "*" : " ", terminator: "")
+        }
+        print()
+    }
+    
+    print("Time: \(time)")
 }
 
 main()

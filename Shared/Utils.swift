@@ -8,8 +8,17 @@ import Foundation
 let ALPHABET_LOWER = "abcdefghijklmnopqrstuvwxyz"
 
 struct Point : Hashable {
-    let x: Int
-    let y: Int
+    var x: Int
+    var y: Int
+    let xVelocity: Int
+    let yVelocity: Int
+
+    init(x: Int, y: Int, xVelocity: Int = 0, yVelocity: Int = 0) {
+        self.x = x
+        self.y = y
+        self.xVelocity = xVelocity
+        self.yVelocity = yVelocity
+    }
 }
 
 // Return character of opposite case, assuming given character is in A-Z/a-z

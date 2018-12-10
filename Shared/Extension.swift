@@ -46,3 +46,10 @@ extension Collection where Self: BidirectionalCollection  {
         return  self[index]
     }
 }
+
+extension Point {
+    mutating func advance() {
+        self.x += self.xVelocity
+        self.y += self.yVelocity
+    }
+}
