@@ -17,6 +17,7 @@ func main() {
         return "(\(x) \(t_x)t, \(y) \(t_y)t)"
     }
     
+    // Output list of expressions that can be passed into Desmos graphing calculator
     expressions.forEach({ print($0) })
 }
 

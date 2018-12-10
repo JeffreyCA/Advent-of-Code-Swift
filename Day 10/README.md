@@ -10,6 +10,8 @@ I may revisit this and come up with a solution that involves more Swift coding.
 
 ![NBRALZPH](output.png)
 
+*Note: I had to horizontally and vertically flip the image for the letters to appear readable right-side-up.*
+
 ### Part 1
 
 Word: **NBRALZPH**
