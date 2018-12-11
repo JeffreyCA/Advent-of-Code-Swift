@@ -5,6 +5,7 @@
 
 import Foundation
 
+// Determine hundreds digit of a integer
 func hundredsDigit(_ val: Int) -> Int {
     if abs(val) < 100 {
         return 0
@@ -13,6 +14,7 @@ func hundredsDigit(_ val: Int) -> Int {
     return (val / 100) % 10
 }
 
+// Construct grid of cell power levels
 func constructGrid(_ serial: Int, _ dimension: Int) -> [[Int]] {
     var grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: dimension), count: dimension)
     
@@ -29,6 +31,8 @@ func constructGrid(_ serial: Int, _ dimension: Int) -> [[Int]] {
     return grid
 }
 
+// Determine the top-left coordinates and power level of square with the highest power level
+// Runs pretty slow...
 func maxPowerSquare(_ grid: [[Int]], _ squareSize: Int) -> (Int, (Int, Int)) {
     let lastSquareTopLeft = grid.count - squareSize
     
@@ -36,14 +40,25 @@ func maxPowerSquare(_ grid: [[Int]], _ squareSize: Int) -> (Int, (Int, Int)) {
     var maxPower = Int.min
     var maxPowerCell = (0, 0)
     
+    // Keep semi-running sum of total power
+    var totalPower = 0
+    
     while true {
-        // print(topLeft)
         let topLeftX = topLeft.0 - 1, topLeftY = topLeft.1 - 1
-        var totalPower = 0
         
-        for y in topLeftY ..< topLeftY + squareSize {
-            for x in topLeftX ..< topLeftX + squareSize {
-                totalPower += grid[y][x]
+        if topLeftX == 0 {
+            // Calculate sum of entire square if starting at first X position
+            totalPower = 0
+            
+            for y in topLeftY ..< topLeftY + squareSize {
+                for x in topLeftX ..< topLeftX + squareSize {
+                    totalPower += grid[y][x]
+                }
+            }
+        } else {
+            // Otherwise just add values in new X column and subtract values from previous X column
+            for y in topLeftY ..< topLeftY + squareSize {
+                totalPower = totalPower - grid[y][topLeftX - 1] + grid[y][topLeftX + squareSize - 1]
             }
         }
         
@@ -52,6 +67,7 @@ func maxPowerSquare(_ grid: [[Int]], _ squareSize: Int) -> (Int, (Int, Int)) {
             maxPowerCell = topLeft
         }
         
+        // Determine next square to search
         if topLeft.0 >= lastSquareTopLeft && topLeft.1 >= lastSquareTopLeft {
             break
         } else if topLeft.0 == lastSquareTopLeft {
@@ -70,19 +86,27 @@ func main() {
     let GRID_DIMENSION = 300
     let grid = constructGrid(serial, GRID_DIMENSION)
     
-    var maxPower = Int.min
-    var maxPowerCell = (0, 0)
+    // What is the X,Y coordinate of the top-left fuel cell of the 3x3 square with the largest total power?
+    let max3Square = maxPowerSquare(grid, 3)
+    print("Coordinate of top-left fuel cell of 3x3 square: \(max3Square.1)")
     
-    for squareSize in 1 ... 300 {
+    // Part 2
+    var maxPower = Int.min
+    var maxPowerTopLeft = (0, 0)
+    var maxPowerSize = 1
+    
+    for squareSize in 1 ... GRID_DIMENSION {
         let result = maxPowerSquare(grid, squareSize)
+        
         if result.0 > maxPower {
             maxPower = result.0
-            maxPowerCell = result.1
+            maxPowerTopLeft = result.1
+            maxPowerSize = squareSize
         }
     }
     
-    print(maxPowerCell)
-    
+    // What is the X,Y,size identifier of the square with the largest total power?
+    print("Size \(maxPowerSize): \(maxPowerTopLeft)")
 }
 
 main()
