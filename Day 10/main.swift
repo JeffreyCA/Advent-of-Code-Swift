@@ -5,19 +5,22 @@
 
 import Foundation
 
-func main() {
-    let input = readInput()
-    
-    // Parse input into array of Points
-    var points = input.map { (line) -> Point in
+// Parse input into array of Points
+func parsePoints(_ input: [String]) -> [Point] {
+    return input.map { (line) -> Point in
         let values = matches(for: "-?\\d+", in: line)
         let x = Int(values[0])!
         let y = Int(values[1])!
         let xVel = Int(values[2])!
         let yVel = Int(values[3])!
+        
         return Point(x: x, y: y, xVelocity: xVel, yVelocity: yVel)
     }
-    
+}
+
+func main() {
+    let input = readInput()
+    var points = parsePoints(input)
     // Keep track of boundary formed by points at any moment
     var xLeft: Int = 0, xRight: Int = 0
     var yBottom: Int = 0, yTop: Int = 0
