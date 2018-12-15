@@ -14,71 +14,38 @@ func hundredsDigit(_ val: Int) -> Int {
     return (val / 100) % 10
 }
 
-// Construct grid of cell power levels
+// Construct grid of cell power levels using a summed-area table
 func constructGrid(_ serial: Int, _ dimension: Int) -> [[Int]] {
-    var grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: dimension), count: dimension)
+    var grid = [[Int]].init(repeating: [Int].init(repeating: 0, count: dimension + 1), count: dimension + 1)
     
-    grid = grid.enumerated().map {
-        let y = $0.offset + 1
-        return $0.element.enumerated().map({
-            let x = $0.offset + 1
+    for y in 1 ... dimension {
+        for x in 1 ... dimension {
             let rackId = x + 10
             let powerLevel = hundredsDigit((rackId * y + serial) * rackId) - 5
-            return powerLevel
-        })
+            grid[y][x] = powerLevel + grid[y - 1][x] + grid[y][x - 1] - grid[y - 1][x - 1]
+        }
     }
     
     return grid
 }
 
 // Determine the top-left coordinates and power level of square with the highest power level
-// Runs pretty slow...
 func maxPowerSquare(_ grid: [[Int]], _ squareSize: Int) -> (Int, (Int, Int)) {
-    let lastSquareTopLeft = grid.count - squareSize
-    
-    var topLeft = (1, 1)
     var maxPower = Int.min
-    var maxPowerCell = (0, 0)
+    var maxPowerTopLeft = (0, 0)
     
-    // Keep semi-running sum of total power
-    var totalPower = 0
-    
-    while true {
-        let topLeftX = topLeft.0 - 1, topLeftY = topLeft.1 - 1
-        
-        if topLeftX == 0 {
-            // Calculate sum of entire square if starting at first X position
-            totalPower = 0
+    for y in squareSize ..< grid.count {
+        for x in squareSize ..< grid.count {
+            let total = grid[y][x] - grid[y - squareSize][x] - grid[y][x - squareSize] + grid[y-squareSize][x - squareSize]
             
-            for y in topLeftY ..< topLeftY + squareSize {
-                for x in topLeftX ..< topLeftX + squareSize {
-                    totalPower += grid[y][x]
-                }
+            if total > maxPower {
+                maxPower = total
+                maxPowerTopLeft = (x - squareSize + 1, y - squareSize + 1)
             }
-        } else {
-            // Otherwise just add values in new X column and subtract values from previous X column
-            for y in topLeftY ..< topLeftY + squareSize {
-                totalPower = totalPower - grid[y][topLeftX - 1] + grid[y][topLeftX + squareSize - 1]
-            }
-        }
-        
-        if totalPower > maxPower {
-            maxPower = totalPower
-            maxPowerCell = topLeft
-        }
-        
-        // Determine next square to search
-        if topLeft.0 >= lastSquareTopLeft && topLeft.1 >= lastSquareTopLeft {
-            break
-        } else if topLeft.0 == lastSquareTopLeft {
-            topLeft.0 = 1
-            topLeft.1 += 1
-        } else {
-            topLeft.0 += 1
         }
     }
     
-    return (maxPower, maxPowerCell)
+    return (maxPower, maxPowerTopLeft)
 }
 
 func main() {
@@ -105,8 +72,7 @@ func main() {
         }
     }
     
-    // What is the X,Y,size identifier of the square with the largest total power?
-    print("Size \(maxPowerSize): \(maxPowerTopLeft)")
+    print("Square with the largest total power: \(maxPowerTopLeft.0, maxPowerTopLeft.1, maxPowerSize)")
 }
 
 main()
