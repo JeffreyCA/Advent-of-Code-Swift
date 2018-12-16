@@ -7,7 +7,7 @@ import Foundation
 
 let ALPHABET_LOWER = "abcdefghijklmnopqrstuvwxyz"
 
-struct Point : Hashable {
+struct Point : Hashable, CustomStringConvertible {
     var x: Int
     var y: Int
     let xVelocity: Int
@@ -18,6 +18,10 @@ struct Point : Hashable {
         self.y = y
         self.xVelocity = xVelocity
         self.yVelocity = yVelocity
+    }
+    
+    var description: String {
+        return "\(x, y)"
     }
 }
 
