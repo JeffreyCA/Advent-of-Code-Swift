@@ -29,28 +29,32 @@ struct Cart {
         self.x = x
         self.y = y
         
-        switch symbol {
-        case "^":
-            self.direction = .up
-        case ">":
-            self.direction = .right
-        case "v":
-            self.direction = .down
-        default:
-            self.direction = .left
-        }
+        self.direction = {
+            switch symbol {
+            case "^":
+                return .up
+            case ">":
+                return .right
+            case "v":
+                return .down
+            default:
+                return .left
+            }
+        }()
     }
     
     // Set next turn direction accordingly
     mutating func doTurn() {
-        switch self.nextTurn {
-        case .left:
-            self.nextTurn = .straight
-        case .straight:
-            self.nextTurn = .right
-        default:
-            self.nextTurn = .left
-        }
+        self.nextTurn = {
+            switch self.nextTurn {
+            case .left:
+                return .straight
+            case .straight:
+                return .right
+            default:
+                return .left
+            }
+        }()
     }
     
     // Return direction to the left
@@ -132,7 +136,6 @@ struct Cart {
         self.updateNextDirection(map[self.y][self.x])
         
         let current = Point(x: self.x, y: self.y)
-        
         if set.contains(current) {
             // Crash occured!
             return current
