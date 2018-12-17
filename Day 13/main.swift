@@ -21,15 +21,24 @@ struct Cart {
     
     var x: Int
     var y: Int
-    
-    var symbol: Character
+    var direction: Direction
     var nextTurn: Turn = .left
     var crashed: Bool = false
     
     init(_ x: Int, _ y: Int, _ symbol: Character) {
         self.x = x
         self.y = y
-        self.symbol = symbol
+        
+        switch symbol {
+        case "^":
+            self.direction = .up
+        case ">":
+            self.direction = .right
+        case "v":
+            self.direction = .down
+        default:
+            self.direction = .left
+        }
     }
     
     // Set next turn direction accordingly
@@ -45,86 +54,96 @@ struct Cart {
     }
     
     // Return direction to the left
-    func left() -> Character {
-        switch self.symbol {
-        case "^":
-            return "<"
-        case ">":
-            return "^"
-        case "v":
-            return ">"
+    func left() -> Direction {
+        switch self.direction {
+        case .up:
+            return .left
+        case .right:
+            return .up
+        case .down:
+            return .right
         default:
-            return "v"
+            return .down
         }
     }
     
     // Return the direction to the right
-    func right() -> Character {
-        switch self.symbol {
-        case "^":
-            return ">"
-        case ">":
-            return "v"
-        case "v":
-            return "<"
+    func right() -> Direction {
+        switch self.direction {
+        case .up:
+            return .right
+        case .right:
+            return .down
+        case .down:
+            return .left
         default:
-            return "^"
+            return .up
         }
     }
 
-    // Advance cart one step, returns point of crash if encountered, otherwise nil
-    mutating func move(map: [String], set: inout Set<Point>) -> Point? {
-        var current = Point(x: self.x, y: self.y)
-        // Remove old position from set
-        set.remove(current)
-        
-        // Change x/y position according to direction of travel
-        if self.symbol == "^" {
-            current.y -= 1
-        } else if self.symbol == "v" {
-            current.y += 1
-        } else if self.symbol == "<" {
-            current.x -= 1
-        } else if self.symbol == ">" {
-            current.x += 1
+    // Change x/y position according to direction of travel
+    private mutating func updatePosition() {
+        switch self.direction {
+        case .up:
+            self.y -= 1
+        case .right:
+            self.x += 1   
+        case .down:
+            self.y += 1
+        default:
+            self.x -= 1
         }
-        
+    }
+    
+    // Update cart's direction according to current track piece
+    private mutating func updateNextDirection(_ track: Character) {
         // Adjust direction based on tracks
-        if map[current.y][current.x] == "/" {
-            if self.symbol == "^" || self.symbol == "v" {
-                self.symbol = right()
+        if track == "/" {
+            if self.direction == .up || self.direction == .down {
+                self.direction = right()
             } else {
-                self.symbol = left()
+                self.direction = left()
             }
-        } else if map[current.y][current.x] == "\\" {
-            if self.symbol == "^" || self.symbol == "v" {
-                self.symbol = left()
+        } else if track == "\\" {
+            if self.direction == .up || self.direction == .down {
+                self.direction = left()
             } else {
-                self.symbol = right()
+                self.direction = right()
             }
-        } else if map[current.y][current.x] == "+" {
+        } else if track == "+" {
             if self.nextTurn == .left {
-                self.symbol = left()
+                self.direction = left()
             } else if self.nextTurn == .right {
-                self.symbol = right()
+                self.direction = right()
             }
             
             self.doTurn()
         }
+    }
+    
+    // Advance cart one step, returns point of crash if encountered, otherwise nil
+    mutating func move(map: [String], set: inout Set<Point>) -> Point? {
+        // Remove old position from set
+        set.remove(Point(x: self.x, y: self.y))
         
-        self.x = current.x
-        self.y = current.y
+        // Update cart position to next position
+        self.updatePosition()
+        // Update direction based on current track
+        self.updateNextDirection(map[self.y][self.x])
+        
+        let current = Point(x: self.x, y: self.y)
         
         if set.contains(current) {
             // Crash occured!
             return current
         }
         
-        // No crash
+        // No crash!
         set.insert(current)
         return nil
     }
     
+    // String representation of current position
     func position() -> String {
         return "\(self.x, self.y)"
     }
