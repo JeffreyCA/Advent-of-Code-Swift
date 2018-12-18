@@ -5,27 +5,6 @@
 
 import Foundation
 
-// Simple stream data structure that keeps track of the current index of the array
-struct SimpleStream {
-    var arr: [Int]
-    var index: Int = 0
-    
-    init(_ arr: [String]) {
-        // Convert all elements to Int for convenience
-        self.arr = arr.map({ Int($0)! })
-    }
-    
-    mutating func next() -> Int {
-        if index >= arr.count {
-            return -1
-        }
-        
-        let val = arr[index]
-        self.index += 1
-        return val
-    }
-}
-
 // Representation of a node in the tree
 struct Node {
     var childCount: Int = 0
@@ -46,8 +25,8 @@ struct Node {
 
 // Construct tree data structure from input stream
 func buildTree(stream: inout SimpleStream) -> Node {
-    let childCount = stream.next()
-    let metadataCount = stream.next()
+    let childCount = Int(stream.next())!
+    let metadataCount = Int(stream.next())!
     
     var node = Node()
     
@@ -56,7 +35,7 @@ func buildTree(stream: inout SimpleStream) -> Node {
     }
     
     for _ in 1 ... metadataCount {
-        node.addMetadata(data: stream.next())
+        node.addMetadata(data: Int(stream.next())!)
     }
     
     return node

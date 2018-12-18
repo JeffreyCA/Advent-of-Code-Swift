@@ -58,3 +58,23 @@ func matches(for regex: String, in text: String) -> [String] {
         return []
     }
 }
+
+// Simple stream data structure that keeps track of the current index of the array
+struct SimpleStream {
+    var arr: [String]
+    var index: Int = 0
+    
+    init(_ arr: [String]) {
+        self.arr = arr
+    }
+    
+    mutating func next() -> String {
+        if index >= arr.count {
+            return ""
+        }
+        
+        let val = arr[index]
+        self.index += 1
+        return val
+    }
+}
