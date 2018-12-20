@@ -24,6 +24,7 @@
 		0050943721C5587500E90B12 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBFE4621B2D3A70000A236 /* Extension.swift */; };
 		0050943821C5587500E90B12 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006728B721B5A10E00A1BC1E /* Utils.swift */; };
 		0050943921C5588000E90B12 /* input.txt in Copy Files */ = {isa = PBXBuildFile; fileRef = 0050943621C5582100E90B12 /* input.txt */; };
+		005B2A9621CBDE62004B4083 /* Deque.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D85F721BD5A3D00322EB2 /* Deque.swift */; };
 		006728B621B58FA800A1BC1E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBFE4621B2D3A70000A236 /* Extension.swift */; };
 		006728B821B5A10E00A1BC1E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006728B721B5A10E00A1BC1E /* Utils.swift */; };
 		006728B921B5A10E00A1BC1E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006728B721B5A10E00A1BC1E /* Utils.swift */; };
@@ -1052,6 +1053,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				005B2A9621CBDE62004B4083 /* Deque.swift in Sources */,
 				00C28C0A21C889D6003EE779 /* Extension.swift in Sources */,
 				00C28C0B21C889D6003EE779 /* Utils.swift in Sources */,
 				00C28C0621C889C3003EE779 /* main.swift in Sources */,

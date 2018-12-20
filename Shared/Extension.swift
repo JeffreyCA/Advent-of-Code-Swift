@@ -66,4 +66,14 @@ extension Point {
         self.x += self.xVelocity
         self.y += self.yVelocity
     }
+    
+    func neighbours4() -> [Point] {
+        var neighbours = [Point]()
+        
+        for offset in [(0, -1), (1, 0), (0, 1), (-1, 0)] {
+            neighbours.append(Point(x: self.x + offset.0, y: self.y + offset.1))
+        }
+        
+        return neighbours
+    }
 }
