@@ -74,7 +74,6 @@ func execute(_ opcode: String, _ i: (Int, Int, Int, Int),
     default:
         return (0, 0, 0, 0)
     }
-    
 }
 
 // Build list of tuples containing the before register state, instruction, and after register state
