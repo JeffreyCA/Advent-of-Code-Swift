@@ -128,14 +128,14 @@ struct Cart {
     // Advance cart one step, returns point of crash if encountered, otherwise nil
     mutating func move(map: [String], set: inout Set<Point>) -> Point? {
         // Remove old position from set
-        set.remove(Point(x: self.x, y: self.y))
+        set.remove(Point(self.x, self.y))
         
         // Update cart position to next position
         self.updatePosition()
         // Update direction based on current track
         self.updateNextDirection(map[self.y][self.x])
         
-        let current = Point(x: self.x, y: self.y)
+        let current = Point(self.x, self.y)
         if set.contains(current) {
             // Crash occured!
             return current
@@ -166,7 +166,7 @@ func main() {
         for x in 0 ..< row.count {
             if row[x] == "^" || row[x] == "v" || row[x] == "<" || row[x] == ">" {
                 carts.append(Cart(x, y, row[x]))
-                pointSet.insert(Point(x: x, y: y))
+                pointSet.insert(Point(x, y))
             }
         }
         

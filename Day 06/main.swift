@@ -46,7 +46,7 @@ func main() {
     let lines = readInput()
     let coordinates : [Point] = lines.map { (str) -> Point in
         let split = str.components(separatedBy: ", ")
-        return Point(x: Int(split[0])!, y: Int(split[1])!)
+        return Point(Int(split[0])!, Int(split[1])!)
     }
     
     // Dictionary of coordinates to tuples which store whether its area of influence is infinite, and the exact area

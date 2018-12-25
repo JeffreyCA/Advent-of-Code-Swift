@@ -13,7 +13,7 @@ struct Point : Hashable, CustomStringConvertible {
     let xVelocity: Int
     let yVelocity: Int
 
-    init(x: Int, y: Int, xVelocity: Int = 0, yVelocity: Int = 0) {
+    init(_ x: Int, _ y: Int, xVelocity: Int = 0, yVelocity: Int = 0) {
         self.x = x
         self.y = y
         self.xVelocity = xVelocity

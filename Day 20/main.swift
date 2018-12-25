@@ -27,7 +27,7 @@ func main() {
     
     var dict = [Point: Int]()
     var stack = [Point]()
-    var point = Point(x: 0, y: 0)
+    var point = Point(0, 0)
     dict[point] = 0
     
     for char in regex {

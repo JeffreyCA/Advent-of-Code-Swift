@@ -14,7 +14,7 @@ func parsePoints(_ input: [String]) -> [Point] {
         let xVel = Int(values[2])!
         let yVel = Int(values[3])!
         
-        return Point(x: x, y: y, xVelocity: xVel, yVelocity: yVel)
+        return Point(x, y, xVelocity: xVel, yVelocity: yVel)
     }
 }
 
