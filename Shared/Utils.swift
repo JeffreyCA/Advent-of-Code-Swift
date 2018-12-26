@@ -62,6 +62,26 @@ public struct UnionFind<T: Hashable> {
     }
 }
 
+struct Point3: Hashable {
+    var x: Int
+    var y: Int
+    var z: Int
+    
+    init(x: Int, _ y: Int, _ z: Int) {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+    
+    func manhattanDistance(_ p: Point3) -> Int {
+        let diffX = abs(p.x - self.x)
+        let diffY = abs(p.y - self.y)
+        let diffZ = abs(p.z - self.z)
+        
+        return diffX + diffY + diffZ
+    }
+}
+
 struct Point4: Hashable {
     var w: Int
     var x: Int
