@@ -23,7 +23,7 @@ func main() {
     }
     
     let strongestBot = bots.max(by: { $0.radius < $1.radius })!
-    let inRange = bots.filter({ $0 != strongestBot && strongestBot.point.manhattanDistance($0.point) <= strongestBot.radius }).count
+    let inRange = bots.filter({ strongestBot.point.manhattanDistance($0.point) <= strongestBot.radius }).count
     
     print("Nanobots in range of strongest bot: \(inRange)")
 }
