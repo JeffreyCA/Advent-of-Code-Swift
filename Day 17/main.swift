@@ -131,8 +131,8 @@ func main() {
     var reservoir = Reservoir(input)
     reservoir.fillFromSpring()
     
-    print(reservoir.wateredTiles())
-    print(reservoir.wateredTilesAtRest())
+    print("Water reaches \(reservoir.wateredTiles()) tiles within range of y values")
+    print("\(reservoir.wateredTilesAtRest()) tiles are left after water spring stops")
 }
 
 main()
