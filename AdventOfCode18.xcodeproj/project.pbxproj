@@ -692,13 +692,13 @@
 			path = "Day 20";
 			sourceTree = "<group>";
 		};
-		005B2A9C21CC1A65004B4083 /* Day 17 (Skipped) */ = {
+		005B2A9C21CC1A65004B4083 /* Day 17 */ = {
 			isa = PBXGroup;
 			children = (
 				005B2A9D21CC1A65004B4083 /* main.swift */,
 				005B2AA221CC1A76004B4083 /* input.txt */,
 			);
-			path = "Day 17 (Skipped)";
+			path = "Day 17";
 			sourceTree = "<group>";
 		};
 		0064A80D21CDE06A0089CD52 /* Day 18 */ = {
@@ -810,7 +810,7 @@
 				00EB14A921C74E7A0032F6D1 /* Day 14 */,
 				00C28C0421C889C3003EE779 /* Day 15 (Skipped) */,
 				00C28C1321C88EDD003EE779 /* Day 16 */,
-				005B2A9C21CC1A65004B4083 /* Day 17 (Skipped) */,
+				005B2A9C21CC1A65004B4083 /* Day 17 */,
 				0064A80D21CDE06A0089CD52 /* Day 18 */,
 				00500B4F21CE81DE0008D8C1 /* Day 19 */,
 				005679CC21CFD70F00F12482 /* Day 20 */,
